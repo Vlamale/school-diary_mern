@@ -1,0 +1,10 @@
+export const MAIN_ROUTE = '/'
+export const USER_ROUTE = '/user'
+export const SUBJECT_ROUTE = '/subject'
+export const DIARY_ROUTE = '/diary'
+export const SCHOOL_ROUTE = '/school'
+export const REGISTRATION_ROUTE = '/registration'
+export const LOGIN_ROUTE = '/login'
+export const ALL_MARKS = '/all-marks'
+export const ONE_SUBJECT_MARKS = '/subject-'
+
