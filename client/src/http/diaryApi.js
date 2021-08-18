@@ -11,7 +11,7 @@ export const getSubjectMarks = async (subjectId) => {
 }
 
 export const getClassromMarks = async () => {
-    const response = await $host.get('api/diary/')
+    const response = await $host.get('api/diary/classroom')
     return response
 }
 

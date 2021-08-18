@@ -17,8 +17,8 @@ class UserController {
         const {
             email,
             password,
-            firstname,
-            surname,
+            firstName,
+            surName,
             middleName,
             schoolName,
             schoolId,
@@ -38,15 +38,13 @@ class UserController {
             return
         }
 
-        // const { _id } = await School.findOne({ schoolName })
-
         const hashPassword = await bcrypt.hash(password, 3)
         const user = await User.create({
             email,
             password: hashPassword,
             role,
-            firstname,
-            surname,
+            firstName,
+            surName,
             middleName,
             schoolName,
             schoolId,
@@ -58,7 +56,9 @@ class UserController {
             email,
             role: user.role,
             id: user._id,
-            fullName: `${surname} ${firstname} ${middleName}`
+            firstName: user.firstName,
+            surName: user.surName,
+            middleName: user.middleName
         }
 
         const token = generateJwt(tokenData)
@@ -84,7 +84,9 @@ class UserController {
             email,
             role: user.role,
             id: user._id,
-            fullName: `${user.surname} ${user.firstname} ${user.middleName}`
+            firstName: user.firstName,
+            surName: user.surName,
+            middleName: user.middleName
         }
         const token = generateJwt(tokenData)
         return res.json({ token })
@@ -110,9 +112,42 @@ class UserController {
         return res.json('ok')
     }
 
+    async getUsersByRole(req, res) {
+        const { role } = req.query
+        const users = await User.find({ role })
+        return res.json(users)
+    }
+
+    async getUserById(req, res) {
+        const { id } = req.params
+        const user = await User.findOne({ _id: id })
+        return res.json(user)
+    }
+
+    async getUserByClassroom(req, res) {
+        const { id } = req.params
+        const user = await User.find({ classroomId: id })
+        return res.json(user)
+    }
+
     async check(req, res) {
         const token = generateJwt(req.id, req.email, req.role)
         return res.json({ token })
+    }
+
+    async deleteUser(req, res) {
+        try {
+            const { id } = req.params
+            console.log(id)
+            await User.deleteOne({ _id: id })
+            // const hasMarks = await Mark.deleteMany({userId: id})
+            // if (hasMarks) {
+            await Mark.deleteMany({ userId: id })
+            // }
+            return res.json('Пользователь удален')
+        } catch (err) {
+            return res.json('Пользователь удален')
+        }
     }
 }
 

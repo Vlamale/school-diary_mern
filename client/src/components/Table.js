@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { getAllSubjects } from '../http/subjectApi'
 import { getUserMarks, getSubjectMarks } from '../http/diaryApi'
 import { getDateInterval } from '../utils/utils'
 
-const Table = ({ dateInterval, subjectId }) => {
+const Table = ({ dateInterval, subjectId, otherUserId }) => {
     const [subjects, setSubjects] = useState([])
     const [marks, setMarks] = useState([])
     const { isAuth, subjectsData, userData } = useSelector(state => state)
     const dateArray = getDateInterval(dateInterval.startDate, dateInterval.endDate)
-    
+
     useEffect(() => {
         let cleanupFunction = false
-        
+
         if (isAuth) {
             if (!cleanupFunction) {
                 const setData = async () => {
                     let data
                     if (!subjectId) {
-                        data = await getUserMarks(userData.id)
+                        otherUserId ?
+                            data = await getUserMarks(otherUserId) :
+                            data = await getUserMarks(userData.id)
                         setSubjects(subjectsData)
                     } else {
                         data = await getSubjectMarks(subjectId._id)
@@ -28,7 +30,7 @@ const Table = ({ dateInterval, subjectId }) => {
                     setMarks(data)
                 }
                 setData()
-                
+
             }
         }
         return () => cleanupFunction = true
@@ -48,6 +50,7 @@ const Table = ({ dateInterval, subjectId }) => {
                             <td key={subjectName}>{subjectName}</td>
                             {dateArray.map(date => {
                                 const markInThisDay = marks.find(m => m.createdAt.split('T')[0] === date && m.subjectId === _id)
+
                                 return (
                                     <td key={date}>{
                                         markInThisDay ?

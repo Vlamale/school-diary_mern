@@ -2,10 +2,10 @@ import {
     AUTH_STATUS,
     USER_DATA_IN_STORE,
     SUBJECTS_DATA_IN_STORE,
-    SET_DATA_AFTER_LOGIN
+    SET_DATA_AFTER_LOGIN,
 } from './types'
 import { checkExistenceKey, getDataFromLS } from '../utils/utils'
-// checkExistenceKey('user-data')
+
 const initialState = {
     isAuth: checkExistenceKey('user-data'),
     userData: getDataFromLS('user-data'),

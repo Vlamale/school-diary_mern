@@ -28,3 +28,23 @@ export const checkUser = async () => {
     const response = await $host.get('api/user/auth/')
     return response
 }
+
+export const getUsersByRole = async (role) => {
+    const {data} = await $host.get(`api/user/all-users/?role=${role}`)
+    return data
+}
+
+export const getUserById = async (id) => {
+    const {data} = await $host.get(`api/user/user-${id}`)
+    return data
+}
+
+export const getUserByClassroom = async (id) => {
+    const {data} = await $host.get(`api/user/classroom-${id}`)
+    return data
+}
+
+export const deleteUser = async (id) => {
+    const {data} = await $authHost.get(`api/user/delete-user-${id}`)
+    return data
+}

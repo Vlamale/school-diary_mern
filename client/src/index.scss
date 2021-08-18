@@ -1,4 +1,5 @@
 @import "./style/authForm.scss";
+@import "./style//allUsersPage.scss";
 
 $themeColor: #f7e1cf48;
 $headerHeight: 90px;
@@ -11,6 +12,10 @@ $borderColor: rgba(0, 0, 0, 0.150);
   box-sizing: border-box;
   color: #1E1E1E;
   font-family: 'Roboto', sans-serif;
+}
+
+ul {
+  list-style: none;
 }
 
 body {
@@ -26,12 +31,34 @@ html, body, #root {
   min-height: 100%; 
 }
 
+.img {
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  margin-right: 15px;
+
+  &-panel {
+    margin-bottom: 10px;
+  }
+}
+
+.title {
+  margin-bottom: 40px;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.user-page__title {
+  margin-bottom: 15px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 .container {
+  display: flex;
   padding-top: $headerHeight;
   max-width: 1124px;
   height: 100vh;
@@ -69,6 +96,7 @@ code {
     display: inline;
     font-size: 24px;
     cursor: pointer;
+    text-decoration: none;
   }
 
   &__user:hover {
@@ -93,8 +121,7 @@ code {
 }
 
 .navbar {
-  top: 40%;
-  position: fixed;
+  margin-top: 25vh;
   width: $navbarWidth;
 
   & a {
@@ -117,6 +144,7 @@ code {
   &__item {
     cursor: pointer;
     white-space: nowrap;
+    line-height: 36px;
   }
 
   &__item:hover {
@@ -125,7 +153,6 @@ code {
 
   &__item:not(:last-child) {
     border-bottom: 1px solid $borderColor;
-    height: 36px;
   }
 }
 
@@ -133,21 +160,15 @@ code {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px 0 0 165px;
-
-
-  &__table-title {
-    margin-bottom: 40px;
-    font-size: 30px;
-    font-weight: 400;
-  }
+  padding: 50px 30px;
+  width: 796px;
 
   &__period {
     display: flex;
   }
 
   &__table {
-    max-width: 800px;
+    max-width: 100%;
     overflow: auto;
     margin: 0 auto;
   }

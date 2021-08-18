@@ -3,20 +3,20 @@ import { useHistory } from 'react-router-dom'
 import {registration} from '../../http/userApi'
 import { MAIN_ROUTE } from '../../utils/const'
 
-const RegistrationBody = ({schools, classrooms}) => {
+const RegistrationBody = ({classrooms}) => {
     
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userName, setUserName] = useState('')
-    const [schoolName, setUserSchoolName] = useState('')
-    const [classroomName, setUserClassroomName] = useState('')
+    const [classroomName, setUserClassroomName] = useState('--Выберите класс--')
     const [role, setRole] = useState('PUPIL')
     const history = useHistory()
-    
+
     const signUp = async () => {
+        let classroom = null
+        let pupleAdditions = null
         const splitName = userName.split(' ')
-        if (!email || !password || !userName || !schoolName || !classroomName || !role) {
-            debugger
+        if (!email || !password || !userName || !role) {
             alert('Форма заполнена не полностью.')
             return
         }
@@ -24,25 +24,41 @@ const RegistrationBody = ({schools, classrooms}) => {
             alert('Укажите ФИО в соответствии с обрацом: Иванов Иван Иванович')
             return
         }
-        const school = schools.find(sc => sc.schoolName === schoolName)
-        const classroom = classrooms.find(({classroomNumber, classroomLetter}) => `${classroomNumber} "${classroomLetter}"` === classroomName)
-
-        if (!school || !classroom) {
-            alert('Выберите настоящую школу и класс')
+        if (role === 'PUPIL') {
+            if (classroomName === '--Выберите класс--') {
+                alert('Ученик без класса, что солдат без автомата! Выберите класс.')
+                return
+            }
+            classroom = classrooms.find(({classroomNumber, classroomLetter}) => `${classroomNumber} "${classroomLetter}"` === classroomName)
+    
+            if (!classroom) {
+                alert('Выберите настоящую школу и класс')
+                return
+            }
+            pupleAdditions = {
+                classroomNumber: +classroomName.split(' ')[0],
+                classroomLetter: classroomName.split('"')[1],
+                classroomId: classroom._id
+            }
         }
+
         const userData = {
             email,
             password,
-            firstname: splitName[1],
-            surname: splitName[0],
+            firstName: splitName[1],
+            surName: splitName[0],
             middleName: splitName[2],
-            schoolName,
-            schoolId: school._id,
-            classroomNumber: +classroomName.split(' ')[0],
-            classroomLetter: classroomName.split('"')[1],
-            classroomId: classroom._id
+            role
         }
-        await registration(userData)
+        
+        await registration(
+            role === 'PUPIL' ? 
+            {
+                userData,
+                ...pupleAdditions
+            } : 
+            userData)
+        
         alert('Пользователь успешно зарегистрирован!')
         history.push(MAIN_ROUTE)
     }
@@ -77,22 +93,16 @@ const RegistrationBody = ({schools, classrooms}) => {
                         value={userName}
                         onChange={e => setUserName(e.target.value)} />
                 </div>
-                <select className="modal__select" name="cars" id="cars" value={schoolName} onChange={e => setUserSchoolName(e.target.value)}>
-                    <option >--Выберите школу--</option>
-                    {schools.map(({schoolName}) => (
-                        <option key={schoolName}>{schoolName}</option>
-                    ))}
+                <select className="modal__select" name="cars" id="cars" value={role} onChange={e => setRole(e.target.value)}>
+                    <option value="PUPIL">PUPIL</option>
+                    <option value="TEACHER">TEACHER</option>
+                    <option value="ADMIN">ADMIN</option>
                 </select>
-                <select className="modal__select" name="cars" id="cars" value={classroomName} onChange={e => setUserClassroomName(e.target.value)}>
-                    <option >--Выберите класс--</option>
+                <select disabled={role !== 'PUPIL'} className="modal__select" name="cars" id="cars" value={classroomName} onChange={e => setUserClassroomName(e.target.value)}>
+                    <option>--Выберите класс--</option>
                     {classrooms.map(({_id, classroomNumber, classroomLetter}) => (
                         <option key={_id}>{`${classroomNumber} "${classroomLetter}"`}</option>
                     ))}
-                </select>
-                <select className="modal__select" name="cars" id="cars" value={role} onChange={e => setRole(e.target.value)}>
-                    <option value="volvo">PUPIL</option>
-                    <option value="saab">TEACHER</option>
-                    <option value="saab">ADMIN</option>
                 </select>
             </div>
             <div className="modal__footer">

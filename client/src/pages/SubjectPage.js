@@ -8,7 +8,7 @@ const SubjectPage = ({match}) => {
     const [startDate, setStartDate] = useState(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
     const [endDate, setEndDate] = useState(new Date(Date.now()).toISOString().split('T')[0])
     const subjectsData = useSelector(state => state.subjectsData)
-    var subjectHref = match.path.slice(1)
+    const subjectHref = match.path.slice(1)
     // decodeURI(window.location.href).split('/')[3];
     const {_id} = subjectsData.find(data => data.subjectName === subjectHref)
 

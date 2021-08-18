@@ -8,7 +8,6 @@ export function checkExistenceKey(key) {
 export function getDataFromLS(key) {
     if (localStorage.getItem(key) !== null) {
         const data = JSON.parse(localStorage.getItem(key))
-        console.log(data)
         return data
     }
     return null
