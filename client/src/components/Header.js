@@ -3,7 +3,7 @@ import logo from '../logo.png'
 import { useSelector, useDispatch } from 'react-redux'
 import { authStatus, userDataInStore } from '../redux/actions'
 import { useHistory } from 'react-router-dom'
-import { LOGIN_ROUTE } from '../utils/const'
+import { LOGIN_ROUTE, MAIN_ROUTE } from '../utils/const'
 
 const Header = () => {
     const [fullUserName, setFullUserName] = useState('')
@@ -13,14 +13,17 @@ const Header = () => {
 
     useEffect(() => {
         if (isAuth) {
-            const { fullName } = JSON.parse(localStorage.getItem('user-data'))
-            setFullUserName(fullName)
+            const { surName, firstName, middleName } = JSON.parse(localStorage.getItem('user-data'))
+            setFullUserName(`${surName} ${firstName} ${middleName}`)
         }
     }, [])
+   
     const signBtnsHandler = () => {
         if (isAuth) {
+            localStorage.removeItem('user-data')
             dispatch(authStatus(false))
             dispatch(userDataInStore(null))
+            history.push(MAIN_ROUTE)
         } else {
             history.push(LOGIN_ROUTE)
         }

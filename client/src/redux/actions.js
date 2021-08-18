@@ -1,5 +1,6 @@
 import {login, registration} from '../http/userApi'
 import {getAllSubjects} from '../http/subjectApi'
+import {getUserById} from '../http/userApi'
 import {
     AUTH_STATUS,
     USER_DATA_IN_STORE,
@@ -43,3 +44,18 @@ export const loadDataAfterLogin = (email, password) => {
         await dispatch(setDataAfterLogin(userData, subjectsData))
     }
 }
+
+// const setOtherUserData = (data) => {
+//     return {
+//         type: OTHER_USER_DATA_IN_STORE,
+//         data
+//     }
+// }
+
+// export const loadOtherUserData = (id) => {
+//     return async (dispatch) => {
+//         const userData = await getUserById(id)
+//         console.log(userData)
+//         dispatch(setOtherUserData(userData))
+//     }
+// }

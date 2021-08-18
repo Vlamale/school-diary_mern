@@ -1,0 +1,21 @@
+.user {
+    &-blocks {
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        width: 100%;
+    }
+
+    &-block:not(:last-child) {
+        border-bottom: 1px solid #d9d9d9;
+    }
+
+    &-link {
+        display: block;
+        padding: 10px 6px;
+        text-decoration: none;
+    }
+
+    &-link:hover {
+        background-color: #d9d9d9;
+    }
+}

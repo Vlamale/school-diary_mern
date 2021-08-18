@@ -6,7 +6,6 @@ const Navbar = () => {
     const {isAuth, userData, subjectsData} = useSelector(state => state)
     useEffect(() => {
         let cleanupFunction = false
-        console.log(userData.role)
         if (isAuth) {
         if (!cleanupFunction) setSubjects(subjectsData)
         }
@@ -18,8 +17,7 @@ const Navbar = () => {
             (<div className="navbar">
             <ul className="navbar__list">
                 <a href="/registration" className="navbar__item">Зарегистрировать пользователя</a>
-                <a href="/all-marks" className="navbar__item">Все классы</a>
-                <a href="/all-marks" className="navbar__item">Список учителей</a>
+                <a href="/all-users" className="navbar__item">Все пользователи</a>
             </ul>
         </div>)}
         {isAuth && userData.role === "PUPIL" &&

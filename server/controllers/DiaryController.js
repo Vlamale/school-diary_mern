@@ -11,7 +11,6 @@ class DiaryController {
 
     async getSubjectMarks(req, res) {
         const { subjectId } = req.query
-
         const marks = await Mark.find({ subjectId })
 
         return res.json({ marks })
@@ -19,7 +18,6 @@ class DiaryController {
 
     async getClassromMarks(req, res) {
         const { classroomNumber, classroomLetter } = req.query
-
         let marks
         if (!classroomNumber) {
             marks = await Mark.find({ classroomLetter })

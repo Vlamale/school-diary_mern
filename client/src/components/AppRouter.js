@@ -1,21 +1,20 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { authRoutes, doesNotAuthRoutes, publicRoutes, adminRoutes } from '../routes'
+import { authRoutes, doesNotAuthRoutes, teacherRoutes, adminRoutes, pupilRoutes } from '../routes'
 import { useSelector } from 'react-redux'
 import SubjectPage from '../pages/SubjectPage'
 
 const AppRouter = () => {
-    const {userData, isAuth, subjectsData} = useSelector(state => state)
-    
-    subjectsData.forEach(subj => {
-        authRoutes.push({
+    const { userData, isAuth, subjectsData } = useSelector(state => state)
+
+    subjectsData && subjectsData.forEach(subj => {
+        pupilRoutes.push({
             path: `/${subj.subjectName}`,
             Component: SubjectPage,
             exact: true
         })
     })
-    console.log(subjectsData)
-console.log(authRoutes)
+
     return (
         <Switch>
             {isAuth && authRoutes.map(({ path, Component, exact }) => (
@@ -24,11 +23,13 @@ console.log(authRoutes)
             {isAuth && userData.role === 'ADMIN' && adminRoutes.map(({ path, Component, exact }) => (
                 <Route key={path} path={path} component={Component} exact={exact} />
             ))}
-            {!isAuth && doesNotAuthRoutes.map(({ path, Component }) => (
-                <Route key={path} path={path} component={Component} exact />
+            {isAuth && userData.role === 'TEACHER' && teacherRoutes.map(({ path, Component, exact }) => (
+                <Route key={path} path={path} component={Component} exact={exact} />
             ))}
-            
-            {publicRoutes.map(({ path, Component }) => (
+            {isAuth && userData.role === 'PUPIL' && pupilRoutes.map(({ path, Component, exact }) => (
+                <Route key={path} path={path} component={Component} exact={exact} />
+            ))}
+            {!isAuth && doesNotAuthRoutes.map(({ path, Component }) => (
                 <Route key={path} path={path} component={Component} exact />
             ))}
         </Switch>
