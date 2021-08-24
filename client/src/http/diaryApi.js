@@ -1,12 +1,12 @@
-import { $host } from "./index"
+import { $host, $authHost } from "./index"
 
 export const getUserMarks = async (id) => {
-    const {data} = await $host.get('api/diary/' + id)
+    const { data } = await $host.get('api/diary/' + id)
     return data.marks
 }
 
 export const getSubjectMarks = async (subjectId) => {
-    const {data} = await $host.get('api/diary/?subjectId=' + subjectId)
+    const { data } = await $host.get('api/diary/?subjectId=' + subjectId)
     return data.marks
 }
 
@@ -16,6 +16,6 @@ export const getClassromMarks = async () => {
 }
 
 export const addMark = async (markData) => {
-    const response = await $host.post('api/diary/', {markData})
+    const response = await $authHost.post('api/diary/', markData)
     return response
 }

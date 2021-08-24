@@ -6,7 +6,7 @@ const checkRoleMiddleware = require('../middleware/checkRoleMiddleware')
 router.get('/classroom', diaryController.getClassromMarks)
 router.get('/:id', diaryController.getUserMarks)
 router.get('/', diaryController.getSubjectMarks)
-router.post('/', checkRoleMiddleware('ADMIN'), diaryController.addMark)
+router.post('/', checkRoleMiddleware('TEACHER'), diaryController.addMark)
 
 
 module.exports = router

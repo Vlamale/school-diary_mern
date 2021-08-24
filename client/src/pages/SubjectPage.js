@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
-import Header from '../components/Header'
 import Navbar from '../components/Navbar'
 import Table from '../components/Table'
 
@@ -9,12 +8,10 @@ const SubjectPage = ({match}) => {
     const [endDate, setEndDate] = useState(new Date(Date.now()).toISOString().split('T')[0])
     const subjectsData = useSelector(state => state.subjectsData)
     const subjectHref = match.path.slice(1)
-    // decodeURI(window.location.href).split('/')[3];
     const {_id} = subjectsData.find(data => data.subjectName === subjectHref)
 
     return (
         <React.Fragment>
-            <Header />
             <div className="container">
                 <Navbar />
                 <div className="content">

@@ -20,11 +20,11 @@ class UserController {
             firstName,
             surName,
             middleName,
-            schoolName,
-            schoolId,
             classroomNumber,
             classroomLetter,
             classroomId,
+            subjectId,
+            subjectName,
             role
         } = req.body
 
@@ -46,11 +46,11 @@ class UserController {
             firstName,
             surName,
             middleName,
-            schoolName,
-            schoolId,
             classroomNumber,
             classroomLetter,
-            classroomId
+            classroomId,
+            subjectId,
+            subjectName,
         })
         const tokenData = {
             email,
@@ -86,7 +86,8 @@ class UserController {
             id: user._id,
             firstName: user.firstName,
             surName: user.surName,
-            middleName: user.middleName
+            middleName: user.middleName,
+            subjectName: user.subjectName
         }
         const token = generateJwt(tokenData)
         return res.json({ token })

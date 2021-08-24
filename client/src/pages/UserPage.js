@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import score from '../img/score.svg'
 import deleteIcon from '../img/deleteIcon.svg'
-import Header from '../components/Header'
 import Navbar from '../components/Navbar'
 import { getUserById, deleteUser } from '../http/userApi'
 import Table from '../components/Table'
 import UserData from '../components/UserData'
+import { addMarkModalStatus } from '../redux/actions'
 
 const UserPage = ({ match }) => {
+    const dispatch = useDispatch()
+    const authUserRole = useSelector(state => state.userData.role)
     const [userData, setUserData] = useState({})
     const [showMarks, setShowMarks] = useState(false)
     const [startDate, setStartDate] = useState(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
@@ -47,25 +50,52 @@ const UserPage = ({ match }) => {
 
     return (
         <React.Fragment>
-            <Header />
             <div className="container">
                 <Navbar />
                 <div className="content">
-                    <h3 className="content__table-title title user-page__title">Данные пользователя:</h3>
                     <div className="img-panel">
-                            {userData.role === 'PUPIL' && <img className="img" onClick={() => setShowMarks(!showMarks)} alt="Score" title="Смотреть оценки пользователя" src={score} />}
-                            <img className="img" onClick={() => deleteBtnHandler()} alt="Delete" title="Удалить пользователя" src={deleteIcon} />
+                        {userData.role === 'PUPIL' &&
+                            <img
+                                className="img"
+                                onClick={() => setShowMarks(!showMarks)}
+                                alt="Score"
+                                title="Смотреть оценки пользователя"
+                                src={score} />
+                        }
+                        {authUserRole === 'ADMIN' &&
+                            <img
+                                className="img"
+                                onClick={() => deleteBtnHandler()}
+                                alt="Delete"
+                                title="Удалить пользователя"
+                                src={deleteIcon} />
+                        }
+                        {authUserRole === 'TEACHER' &&
+                            <button
+                                className="add-mark__btn"
+                                onClick={() => dispatch(addMarkModalStatus('AddMark'))}
+                                >Добавить оценку
+                            </button>
+                        }
                     </div>
                     <UserData userData={userData} />
                     {showMarks &&
                         <React.Fragment>
                             <div className="content__period">
                                 <p>С:</p>
-                                <input type="date" value={startDate} onChange={e => defineAndSetTimeData(e.target.value, 'start')} />
+                                <input
+                                    type="date"
+                                    value={startDate}
+                                    onChange={e => defineAndSetTimeData(e.target.value, 'start')}
+                                />
                                 <p>по:</p>
-                                <input type="date" value={endDate} onChange={e => defineAndSetTimeData(e.target.value, 'end')} />
+                                <input
+                                    type="date"
+                                    value={endDate}
+                                    onChange={e => defineAndSetTimeData(e.target.value, 'end')}
+                                />
                             </div>
-                            <Table dateInterval={{startDate, endDate}} otherUserId={userId}/>
+                            <Table dateInterval={{ startDate, endDate }} otherUserId={userId} />
                         </React.Fragment>}
                 </div>
             </div>

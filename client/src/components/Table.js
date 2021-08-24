@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getAllSubjects } from '../http/subjectApi'
 import { getUserMarks, getSubjectMarks } from '../http/diaryApi'
 import { getDateInterval } from '../utils/utils'
 

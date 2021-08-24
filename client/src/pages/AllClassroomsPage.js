@@ -16,7 +16,7 @@ const AllClassroomsPage = () => {
         }
         return () => cleanupFunction = true
     }, [])
-    console.log(classrooms.sort((a, b) => a.classroomNumber - b.classroomNumber))
+
     return (
         <div className="container">
             <Navbar />

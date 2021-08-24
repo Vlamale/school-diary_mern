@@ -26,9 +26,12 @@ const UsersByRolePage = ({ match }) => {
                 <h3 className="user-blocks__title title">{role}</h3>
                 <ul className="user-blocks">
                     {users.map((user, id) => (
-                        <li className="user-block"  key={user._id}>
-                            <Link className="user-link" to={'user-' + user._id} >{id + 1}. {user.surName} {user.firstName} {user.middleName}</Link>
-                            {/* реализовать переходы по ссылкам пользователей */}
+                        <li className="user-block" key={user._id}>
+                            <Link
+                                className="user-link"
+                                to={'user-' + user._id}
+                            >{id + 1}. {user.surName} {user.firstName} {user.middleName}
+                            </Link>
                         </li>
                     ))}
                 </ul>

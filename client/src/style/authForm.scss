@@ -1,12 +1,21 @@
 $modalWidth: 250px;
 
 .modal-wrapper {
-    height: 100%;
-    width: 100%;
-    background-color: rgb(226, 217, 209);
+    // height: 100%;
+    // width: 100%;
+    // background-color: rgb(226, 217, 209);
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    background-color: #52514f4d;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
 }
 
 .modal {
@@ -46,6 +55,10 @@ $modalWidth: 250px;
     }
 
     &__email-block {
+        margin-top: 20px;
+    }
+
+    &__mark-block {
         margin-top: 20px;
     }
 

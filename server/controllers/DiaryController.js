@@ -1,6 +1,7 @@
 const path = require('path')
 const Mark = require('../models/mark')
 const User = require('../models/user')
+const ApiError = require('../error/ApiError')
 
 class DiaryController {
     async getUserMarks(req, res) {
@@ -29,11 +30,11 @@ class DiaryController {
         return res.json({ marks })
     }
 
-    async addMark(req, res) {
+    async addMark(req, res, next) {
         try {
-            const { mark, userId, subjectId, createdAt } = req.body
+            const { mark, userId, subjectId, classroomId, createdAt } = req.body
 
-            const user = await User.findOne({ _id: userId })
+            const user = await User.findById(userId)
 
             if (!user.classroomNumber || !user.classroomLetter) {
                 return
@@ -47,13 +48,13 @@ class DiaryController {
             })
              
             if (markOnThisDay) {
-                console.log('Mark on this day for this subject alredy exist!')
-                throw new Error('Mark on this day for this subject alredy exist!')
+                return next(ApiError.badRequest('Mark on this day for this subject alredy exist!'))
             }
             const createMark = await Mark.create({
                 mark,
                 userId,
                 subjectId,
+                classroomId,
                 classroomNumber: user.classroomNumber,
                 classroomLetter: user.classroomLetter,
                 createdAt

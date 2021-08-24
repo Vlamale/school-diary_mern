@@ -74,6 +74,26 @@ export const teacherRoutes = [
         path: ALL_USERS_PAGE,
         Component: AllUsersPage,
         exact: true
+    },
+    {
+        path: [ALL_ADMINS, ALL_TEACHERS, ALL_PUPILS],
+        Component: UsersByRolePage,
+        exact: true
+    },
+    {
+        path: USER_ROUTE,
+        Component: UserPage,
+        exact: true
+    },
+    {
+        path: ALL_CLASSROOMS,
+        Component: AllClassroomsPage,
+        exact: true
+    },
+    {
+        path: CLASSROOM_ROUTE,
+        Component: UsersByClassroomPage,
+        exact: true
     }
 ]
 
