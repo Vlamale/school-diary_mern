@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import Header from '../components/Header'
 import Navbar from '../components/Navbar'
 import Table from '../components/Table'
 
@@ -19,7 +18,6 @@ const AllMarksPage = () => {
     }
     return (
         <React.Fragment>
-            <Header />
             <div className="container">
                 <Navbar />
                 <div className="content">

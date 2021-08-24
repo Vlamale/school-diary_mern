@@ -3,13 +3,15 @@ import {
     USER_DATA_IN_STORE,
     SUBJECTS_DATA_IN_STORE,
     SET_DATA_AFTER_LOGIN,
+    STATUS_ADD_MARK_MODAL,
 } from './types'
 import { checkExistenceKey, getDataFromLS } from '../utils/utils'
 
 const initialState = {
     isAuth: checkExistenceKey('user-data'),
     userData: getDataFromLS('user-data'),
-    subjectsData: getDataFromLS('subjects')
+    subjectsData: getDataFromLS('subjects'),
+    addMarkModalStatus: null
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -35,6 +37,11 @@ const rootReducer = (state = initialState, action) => {
                 isAuth: true,
                 userData: action.userData,
                 subjectsData: action.subjectsData
+            }
+        case STATUS_ADD_MARK_MODAL:
+            return {
+                ...state,
+                addMarkModalStatus: action.status
             }
         default:
             return { ...state }

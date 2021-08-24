@@ -12,7 +12,6 @@ const UsersByClassroomPage = ({ match }) => {
         if (!cleanupFunction) {
             const setData = async () => {
                 const data = await getUserByClassroom(id)
-                console.log(data)
                 setUsers(data)
             }
             setData()
@@ -25,16 +24,20 @@ const UsersByClassroomPage = ({ match }) => {
             <Navbar />
             <div className="content">
                 <h3 className="user-blocks__title title">Список учеников:</h3>
-                {users.length > 0 && 
-                <ul className="user-blocks">
-                     {users.map((user, id) => (
-                        <li className="user-block"  key={user._id}>
-                            <Link className="user-link" to={'user-' + user._id} >{id + 1}. {user.surname} {user.firstname} {user.middleName}</Link>
-                        </li>
-                    ))}
-                </ul>}
+                {users.length > 0 &&
+                    <ul className="user-blocks">
+                        {users.map((user, id) => (
+                            <li className="user-block" key={user._id}>
+                                <Link
+                                    className="user-link"
+                                    to={'user-' + user._id}
+                                >{id + 1}. {user.surName} {user.firstName} {user.middleName}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>}
                 {!users.length &&
-                <p>В данном классе нет учеников.</p>}
+                    <p>В данном классе нет учеников.</p>}
             </div>
         </div>
     )

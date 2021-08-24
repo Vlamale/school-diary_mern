@@ -22,9 +22,6 @@ const RegistrationPage = () => {
         <div className="container">
             <div className="modal-wrapper">
                 <div className="modal">
-                    <div className="modal__header">
-                        <p className="modal__title">Регистрация</p>
-                    </div>
                     <RegistrationBody classrooms={classrooms}/>
                 </div>
             </div>

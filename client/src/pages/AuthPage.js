@@ -36,7 +36,6 @@ const AuthPage = () => {
                         </div>
                         <div className="modal__footer">
                             <button className="modal__btn" type="submit">Войти</button>
-                            {/* onClick={() => signIn(email, password)} */}
                         </div>
                     </form>
                 </div>

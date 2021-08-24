@@ -18,6 +18,10 @@ ul {
   list-style: none;
 }
 
+button {
+  border: none;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -39,7 +43,21 @@ html, body, #root {
 
   &-panel {
     margin-bottom: 10px;
+    display: flex;
   }
+}
+
+.add-mark__btn {
+  padding: 3px 5px;
+  background-color: rgb(65, 243, 154);
+  border-radius: 3px;
+  border: 1px solid rgb(61, 60, 60);
+  cursor: pointer;
+  font-size: 19px;
+}
+
+.add-mark__btn:hover {
+  transform: scale(1.1)
 }
 
 .title {
@@ -145,6 +163,8 @@ code {
     cursor: pointer;
     white-space: nowrap;
     line-height: 36px;
+    background: transparent;
+    font-size: 20px;
   }
 
   &__item:hover {
