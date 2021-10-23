@@ -32,34 +32,36 @@ class DiaryController {
 
     async addMark(req, res, next) {
         try {
-            const { mark, userId, subjectId, classroomId, createdAt } = req.body
+            const { mark, userId, subjectId } = req.body
+            console.log(req.body)
 
             const user = await User.findById(userId)
 
             if (!user.classroomNumber || !user.classroomLetter) {
                 return
             }
+            const createdAt = new Date(new Date().toISOString().split('T')[0]).toISOString()
             const markOnThisDay = await Mark.findOne({ 
                 userId, 
                 subjectId, 
                 createdAt: {
-                    $gte: new Date(new Date().toISOString().split('T')[0]).toISOString()
+                    $gte: createdAt
                 }
             })
              
             if (markOnThisDay) {
-                return next(ApiError.badRequest('Mark on this day for this subject alredy exist!'))
+                return next(ApiError.badRequest('Mark on this day for this subject already exist!'))
             }
-            const createMark = await Mark.create({
+            const createdMark = await Mark.create({
                 mark,
                 userId,
                 subjectId,
-                classroomId,
+                classroomId: user.classroomId,
                 classroomNumber: user.classroomNumber,
                 classroomLetter: user.classroomLetter,
                 createdAt
             })
-            return res.json({ createMark })
+            return res.json({ createdMark })
         } catch (err) {
             console.log(err)
         }
