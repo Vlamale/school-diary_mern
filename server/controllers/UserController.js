@@ -1,12 +1,14 @@
 const User = require('../models/user')
-const School = require('../models/school')
-const Classroom = require('../models/classroom')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const {UserDataDto} = require('../dtos/userDto')
+const ApiError = require('../error/ApiError')
+// const School = require('../models/school')
+// const Classroom = require('../models/classroom')
 
 const generateJwt = (data) => {
     return jwt.sign(
-        data,
+        {...data},
         process.env.JWT_KEY,
         { expiresIn: '24h' }
     )
@@ -29,13 +31,13 @@ class UserController {
         } = req.body
 
         if (!email || !password) {
-            return
+            return ApiError.badRequest('Не заполнены обязательные поля')
         }
 
         const candidate = await User.findOne({ email })
 
         if (candidate) {
-            return
+            throw ApiError.badRequest('Пользователь с таким email уже существет')
         }
 
         const hashPassword = await bcrypt.hash(password, 3)
@@ -52,14 +54,7 @@ class UserController {
             subjectId,
             subjectName,
         })
-        const tokenData = {
-            email,
-            role: user.role,
-            id: user._id,
-            firstName: user.firstName,
-            surName: user.surName,
-            middleName: user.middleName
-        }
+        const tokenData = new UserDataDto(user)
 
         const token = generateJwt(tokenData)
         return res.json({ token })
@@ -80,55 +75,50 @@ class UserController {
         if (!comparePassword) {
             return
         }
-        const tokenData = {
-            email,
-            role: user.role,
-            id: user._id,
-            firstName: user.firstName,
-            surName: user.surName,
-            middleName: user.middleName,
-            subjectName: user.subjectName
-        }
+        const tokenData = new UserDataDto(user)
         const token = generateJwt(tokenData)
         return res.json({ token })
     }
 
-    async changeClassroom(req, res) {
-        const { classroomId, userIds } = req.body
-        const idsArray = userIds.split(',')
+    // async changeClassroom(req, res) {
+    //     const { classroomId, userIds } = req.body
+    //     const idsArray = userIds.split(',')
 
-        const newClass = await Classroom.find({ _id: classroomId })
-        idsArray.forEach(async (_id) => {
-            await User.findOneAndUpdate(
-                { _id },
-                {
-                    classroomId: newClass._id,
-                    classroomNumber: newClass.classroomNumber,
-                    classroomLetter: newClass.classroomLetter
-                },
-                { new: true }
-            )
-        })
+    //     const newClass = await Classroom.find({ _id: classroomId })
+    //     idsArray.forEach(async (_id) => {
+    //         await User.findOneAndUpdate(
+    //             { _id },
+    //             {
+    //                 classroomId: newClass._id,
+    //                 classroomNumber: newClass.classroomNumber,
+    //                 classroomLetter: newClass.classroomLetter
+    //             },
+    //             { new: true }
+    //         )
+    //     })
 
-        return res.json('ok')
-    }
+    //     return res.json('ok')
+    // }
 
     async getUsersByRole(req, res) {
         const { role } = req.query
         const users = await User.find({ role })
-        return res.json(users)
+        const usersData = users.map(user => new UserDataDto(user))
+        return res.json(usersData)
     }
 
     async getUserById(req, res) {
         const { id } = req.params
         const user = await User.findOne({ _id: id })
-        return res.json(user)
+        const userData = new UserDataDto(user)
+        return res.json(userData)
     }
 
     async getUserByClassroom(req, res) {
         const { id } = req.params
-        const user = await User.find({ classroomId: id })
-        return res.json(user)
+        const users = await User.find({ classroomId: id })
+        const usersData = users.map(user => new UserDataDto(user))
+        return res.json(usersData)
     }
 
     async check(req, res) {
@@ -139,12 +129,7 @@ class UserController {
     async deleteUser(req, res) {
         try {
             const { id } = req.params
-            console.log(id)
             await User.deleteOne({ _id: id })
-            // const hasMarks = await Mark.deleteMany({userId: id})
-            // if (hasMarks) {
-            await Mark.deleteMany({ userId: id })
-            // }
             return res.json('Пользователь удален')
         } catch (err) {
             return res.json('Пользователь удален')
